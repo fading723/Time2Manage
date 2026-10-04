@@ -1,0 +1,16 @@
+__pycache__/
+build/
+release/
+dist/
+*.spec
+!desktop.spec
+*.sqlite*
+*.db
+*.db-*
+*.log
+.env
+.env.*
+*.pem
+*.key
+backups/
+cache/

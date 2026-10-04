@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' qrc:; script-src 'self' qrc: 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'">
+<title>时间有迹</title><link rel="stylesheet" href="style.css"><script src="qrc:///qtwebchannel/qwebchannel.js"></script></head>
+<body>
+<svg class="svg-defs" aria-hidden="true"><defs>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
+<symbol id="i-timeline" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/><rect x="6" y="3" width="5" height="4" rx="1"/><rect x="13" y="10" width="6" height="4" rx="1"/><rect x="5" y="17" width="8" height="4" rx="1"/></symbol>
+<symbol id="i-note" viewBox="0 0 24 24"><path d="M14 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9M9 15l1-4L19 2l3 3-9 9z"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5zM20 2v4M18 4h4"/></symbol>
+<symbol id="i-apps" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M8 4v5"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="10" cy="18" r="2"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7z"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+</defs></svg>
+<aside class="sidebar">
+ <div class="brand"><span class="brandmark"><img src="APP_ICON_DATA" alt="时间有迹"></span><div><strong>时间有迹</strong><small>Time2Manage</small></div></div>
+ <div class="nav-label">我的时间</div>
+ <nav>
+  <button class="nav active" data-page="overview"><svg><use href="#i-grid"/></svg>时间概览</button>
+  <button class="nav" data-page="timeline"><svg><use href="#i-timeline"/></svg>时间轴<span class="nav-tag">分钟</span></button>
+  <button class="nav" data-page="journal"><svg><use href="#i-note"/></svg>此刻日记</button>
+  <button class="nav" data-page="review"><svg><use href="#i-spark"/></svg>每日复盘</button>
+ </nav>
+ <div class="nav-label second">管理</div>
+ <nav><button class="nav" data-page="apps"><svg><use href="#i-apps"/></svg>软件管理</button><button class="nav" data-page="settings"><svg><use href="#i-settings"/></svg>设置</button></nav>
+ <div class="sidebar-bottom"><div class="local-tag"><svg><use href="#i-lock"/></svg>本地记录，属于你</div><div class="live-status"><i id="status-dot"></i><span id="status">正在连接本地记录…</span></div><button id="pause" class="quiet">暂停自动记录</button><div class="version">Time2Manage 2.0</div></div>
+</aside>
+<main>
+ <header class="toolbar"><div id="breadcrumb">我的时间 / 时间概览</div><div class="toolbar-actions"><span id="focus-live" class="focus-live" hidden>专注中 <b id="session-clock">00:00:00</b></span><button id="focus-button" class="button soft"><svg><use href="#i-play"/></svg><span>开始手动专注</span></button><button class="button primary" id="new-journal"><svg><use href="#i-plus"/></svg>记下此刻</button></div></header>
+ <div class="content">
+  <div id="demo-banner" class="banner" hidden>演示模式 · 以下为示例记录，独立存储，不计入真实使用。</div>
+  <div class="page-heading"><div><div class="eyebrow" id="eyebrow">A LITTLE MORE INTENTION.</div><h1 id="page-title">让时间，清晰可见。</h1><p id="page-subtitle">看看注意力去了哪里，也记住那些值得留下的时刻。</p></div><div class="date-group"><button id="previous-day" class="icon-button" title="前一天">‹</button><input type="date" id="day"><button id="next-day" class="icon-button" title="后一天">›</button><button id="today" class="quiet blue">今天</button></div></div>
+
+  <section id="page-overview" class="page">
+   <div class="section-bar"><div class="segmented" id="period"><button data-period="day" class="selected">当天</button><button data-period="week">近一周</button><button data-period="month">本月</button></div><span class="subtle" id="range-label"></span><button class="quiet blue export">导出当天明细 ↗</button></div>
+   <div class="metrics"><article class="card metric"><div class="metric-top">活动覆盖时间<span class="pill">去重</span></div><div class="metric-number" id="metric-active">—</div><p>软件与专注时间的并集</p></article><article class="card metric"><div class="metric-top">软件累计时间<span class="tiny-dot blue-dot"></span></div><div class="metric-number" id="metric-app">—</div><p>前台使用，后台不计时</p></article><article class="card metric"><div class="metric-top">专注累计时间<span class="tiny-dot green-dot"></span></div><div class="metric-number" id="metric-focus">—</div><p>由你主动开始与结束</p></article></div>
+   <div class="card timeline-card" id="timeline-home"></div>
+   <div class="two-columns"><article class="card distribution"><div class="card-heading"><div><h2>注意力分布</h2><p>所选范围内的软件使用占比</p></div><span class="small-label">APP USAGE</span></div><div class="distribution-body"><div class="donut-wrap"><svg id="donut" viewBox="0 0 180 180"></svg><div class="donut-label"><b id="app-count">0</b><span>个软件</span></div></div><div id="ranking" class="ranking"></div></div></article><article class="card"><div class="card-heading"><div><h2 id="rhythm-title">一天的节奏</h2><p id="rhythm-subtitle">点击某个小时，放大查看这一段</p></div><span class="small-label">RHYTHM</span></div><div id="rhythm"></div></article></div>
+   <p id="coverage-note" class="footnote"></p>
+  </section>
+
+  <section id="page-timeline" class="page" hidden><div class="card timeline-card" id="timeline-full"></div><div class="card detail-card"><div class="card-heading"><div><h2>按时间展开</h2><p>软件使用与手动专注区间，保留具体起止时间</p></div><button class="quiet blue export">导出 CSV ↗</button></div><div id="event-list"></div></div></section>
+  <section id="page-journal" class="page" hidden><div class="journal-intro card"><div><span class="small-label">CAPTURE THE MOMENT</span><h2>为今天，留下一点线索。</h2><p>成果、想法、感受，或只是一个值得记住的瞬间。</p></div><div><button class="button primary" onclick="act('journal')">写一条日记</button><small id="journal-key-hint">Ctrl + Alt + J，随时唤起</small></div></div><div id="journal-list"></div></section>
+  <section id="page-review" class="page" hidden><div class="review-hero card"><div class="spark-icon"><svg><use href="#i-spark"/></svg></div><div><span class="small-label">A MOMENT TO REFLECT</span><h2>看见节奏，找到下一步。</h2><p>把今天的时间轴和日记交给模型，得到一份有依据的复盘。</p></div><button class="button primary" id="preview-review"><svg><use href="#i-spark"/></svg>预览并生成复盘</button></div><div class="review-meta"><span id="api-summary">请先在设置中配置 API 地址和模型</span><button class="quiet blue" onclick="navigate('settings')">配置 API →</button></div><div id="review-progress" class="banner" hidden>模型正在复盘这一天… 你可以继续使用软件，完成后结果会保存到本地。</div><div id="review-list"></div></section>
+  <section id="page-apps" class="page" hidden><div class="section-bar"><span class="subtle">仅当前前台的软件计时；同一分钟内的切换会分别保留。</span><div class="row"><button class="button soft" id="capture-app">识别前台软件</button><button class="button primary" id="add-app"><svg><use href="#i-plus"/></svg>添加软件</button></div></div><div class="card" id="apps-list"></div><p class="footnote">进程名可在任务管理器「详细信息」中查看。多个进程用英文逗号分隔。删除后立即从当前时间轴和统计中隐藏；原始记录仍保留在本地备份中。</p></section>
+  <section id="page-settings" class="page" hidden>
+   <div class="card settings-card"><div class="card-heading"><div><h2>记录与快捷键</h2><p>让记录融入你的工作习惯</p></div><svg class="heading-icon"><use href="#i-settings"/></svg></div><div class="form-grid"><label>专注计时快捷键<input id="focus-key" placeholder="Ctrl+Alt+F"></label><label>日记输入快捷键<input id="journal-key" placeholder="Ctrl+Alt+J"></label><label>空闲暂停阈值（秒）<input type="number" min="5" max="3600" id="idle-seconds"></label><div class="field-note">持续无键鼠操作超过阈值后暂停。阅读、看视频时可调大；此前的宽限时间会计入。</div></div><div class="form-footer"><span class="subtle">锁屏、休眠不计软件时间。专注由手动开关控制。</span><button class="button primary" id="save-tracking">保存记录设置</button></div></div>
+   <div class="card settings-card"><div class="card-heading"><div><h2>每日复盘 API</h2><p>支持 Chat Completions 兼容接口，也支持本机模型</p></div><svg class="heading-icon"><use href="#i-spark"/></svg></div><div class="form-grid"><label class="wide">API 基础地址<input id="api-endpoint" placeholder="https://你的服务商地址/v1"></label><label>模型名称<input id="api-model" placeholder="填写服务商支持的模型 ID"></label><label>API 密钥<input type="password" id="api-key" autocomplete="off" placeholder="输入密钥"></label></div><div class="key-note"><span id="key-status">密钥使用 Windows 加密后保存在本机。</span><label class="checkbox"><input type="checkbox" id="clear-key">清除已保存的密钥</label></div><label class="prompt-label">复盘提示词<button class="quiet blue" id="reset-prompt">恢复默认提示词</button></label><textarea id="api-prompt" rows="10"></textarea><div class="form-footer"><span class="subtle">仅点击生成时发送你预览的当天记录和日记。</span><div class="row"><button class="button soft" id="test-api">测试连接</button><button class="button primary" id="save-api">保存 API 设置</button></div></div></div>
+   <div class="card settings-card"><div class="card-heading"><div><h2>本地数据</h2><p id="data-dir">SQLite 数据库</p></div><svg class="heading-icon"><use href="#i-lock"/></svg></div><div class="form-footer"><span class="subtle">记录实时写入本机。启动、每 5 分钟及退出时自动备份至 backups 文件夹。</span><div class="row"><button class="button soft" onclick="act('open_data')">打开目录</button><button class="button soft" onclick="act('backup')">备份数据库</button></div></div></div>
+  </section>
+ </div>
+</main>
+<div id="toast" role="status" hidden></div><div id="tooltip" hidden></div>
+<dialog id="app-dialog"><div class="modal-heading"><h2 id="app-dialog-title">添加软件</h2><button class="icon-button" onclick="closeDialog('app-dialog')">×</button></div><input type="hidden" id="edit-app-id"><label>软件名称<input id="edit-app-name" placeholder="例如：Notion"></label><label>进程名<input id="edit-app-processes" placeholder="notion.exe"></label><p class="subtle">多个进程可用英文逗号分隔。</p><div class="modal-footer"><button class="button soft" onclick="closeDialog('app-dialog')">取消</button><button class="button primary" id="save-app">保存软件</button></div></dialog>
+<dialog id="delete-dialog"><div class="modal-heading"><h2>停止记录此软件？</h2></div><p>停止自动记录，并立即从当前时间轴和统计中隐藏。原始记录仍保存在本地。</p><div class="modal-footer"><button class="button soft" onclick="closeDialog('delete-dialog')">取消</button><button class="button danger" id="confirm-delete">删除软件</button></div></dialog>
+<dialog id="preview-dialog" class="large-modal"><div class="modal-heading"><div><h2>这次复盘，会发送什么？</h2><p id="preview-meta" class="subtle"></p></div><button class="icon-button" onclick="closeDialog('preview-dialog')">×</button></div><div class="banner">确认生成后，将以下提示词、当天使用明细和日记发送到你配置的 API；生成结果保存在本地。</div><details open><summary>复盘提示词</summary><pre id="preview-prompt"></pre></details><details><summary>当天数据包 · 点击展开</summary><pre id="preview-payload"></pre></details><div class="modal-footer"><button class="button soft" onclick="closeDialog('preview-dialog')">取消</button><button class="button primary" id="send-review">确认发送并生成</button></div></dialog>
+<script src="app.js"></script></body></html>
