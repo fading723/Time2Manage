@@ -6,11 +6,13 @@
 
 **自动记录软件使用 · 分钟时间轴 · 手动专注 · 此刻日记 · AI 每日复盘**
 
-## 🚀 下载与运行
+## 🚀 下载与安装
 
-1. 前往 [Releases](https://github.com/fading723/Time2Manage/releases/latest)，下载 Windows x64 ZIP。
-2. 完整解压，运行文件夹中的 **Time2Manage.exe**，无需安装 Python。
-3. 保留 `_internal` 文件夹，与 EXE 一起使用。
+1. 前往 [Releases](https://github.com/fading723/Time2Manage/releases/latest)，下载 **Time2Manage-Setup-2.1.2-x64.exe**。
+2. 双击安装程序，按向导完成安装，无需安装 Python或手动配置运行文件。
+3. 从桌面或开始菜单的「时间有迹」快捷方式启动。
+
+安装到当前 Windows 账号，无需管理员权限。安装向导提供桌面快捷方式选项；可在 Windows「已安装的应用」中卸载。更新安装及卸载保留本地记录、日记和 API 设置。更新前请从系统托盘退出正在运行的时间有迹。
 
 发行版使用本项目的头像图标。最小化后，软件会收起到右下角系统托盘；点击图标即可重新打开。图标可能位于「隐藏图标」菜单中。
 
@@ -114,9 +116,10 @@ python -m unittest discover -s tests -v
 python tests/ui_smoke.py
 python tests/tray_smoke.py
 .\build.bat
+.\build-installer.bat
 ```
 
-构建结果位于 `release/Time2Manage/`。界面与托盘集成测试使用独立数据，不读取真实记录；API 集成测试使用本机模拟接口。
+应用构建结果位于 `release/Time2Manage/`，安装包位于 `installer-output/`。构建安装包需要安装 [Inno Setup 6](https://jrsoftware.org/isdl.php)，并让 `ISCC.exe` 可从 PATH 调用，或安装在其默认目录。界面与托盘集成测试使用独立数据，不读取真实记录；API 集成测试使用本机模拟接口。
 
 体验演示数据：
 
